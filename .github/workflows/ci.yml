@@ -1,0 +1,28 @@
+name: CI
+on:
+  push:
+    branches: [ master ]
+
+permissions:
+  contents: write
+
+jobs:
+  # Deploy job
+  deploy:
+
+    # Specify runner + deployment step
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # If you have node/npm based project
+    - name: Install dependencies
+      run: npm ci
+
+    # Deploy to gh-pages branch
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist # or ./build or wherever your output is
